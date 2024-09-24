@@ -29,10 +29,22 @@ docker run -d -p 8080:80 nginx
 Команда запускает контейнер с Nginx на порту 8080. Флаг -d запускает контейнер в фоновом режиме, а -p пробрасывает
 порт (8080 -> 80).
 
+```bash
+docker ps
+```
+Посмотреть контейнеры 
+
 1.2 **Остановка и удаление контейнера:**
 
 ```bash
+docker ps
+```
+
+Смотрим список контейнеров и копируем ID.
+
+```bash
 docker stop <container_id>
+#  После остановки опять введите docker ps , а потом docker ps -a
 docker rm <container_id>
 ```
 
@@ -44,8 +56,14 @@ docker rm <container_id>
 * Alpine образ: минимальный образ с уменьшенным размером. Пример — `postgres:alpine`.
 
 ```bash
-docker run -d -p 5432:5432 postgres:alpine
-docker run -d -p 5433:5432 postgres:latest
+docker run -d -p 5432:5432 -e "POSTGRES_PASSWORD=password" postgres:alpine
+docker run -d -p 5433:5432 -e "POSTGRES_PASSWORD=password" postgres:latest
+```
+
+Посмотреть логи 
+
+```bash
+docker logs -f <container_id>
 ```
 
 Сравните размер образов с помощью команды `docker images`.
@@ -98,7 +116,7 @@ EXPOSE 5432
 
 * FROM: базовый образ.
 * ENV: переменные окружения.
-* EXPOSE: проброс порта.
+* EXPOSE: указание порта
 * RUN: команда для установки пакетов.
 * COPY: копирование файлов.
 * CMD: команда для запуска контейнера.
@@ -123,7 +141,8 @@ docker run -d -p 5432:5432 my_postgres
 2.3. Тегируем образ и пушим его на Docker Hub:
 
 ```bash
-docker tag my_postgres <username>/my_postgres
+docker tag my_postgres <username>/my_postgres:latest
+docker login
 docker push <username>/my_postgres
 ```
 
@@ -166,13 +185,13 @@ services:
 4.2. Запуск контейнеров:
 
     ```bash
-    docker-compose up -d
+    docker compose up -d
     ```
 
 4.3 **Остановка и удаление контейнеров:**
 
 ```bash
-docker-compose down
+docker compose down
 ```
 
 4.4 **Управление volume:**
